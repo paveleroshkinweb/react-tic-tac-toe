@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Square from '../Square/Square';
+import checkWinner from '../../utils/checkWinner';
 import './Board.css';
 
 class Board extends Component {
@@ -16,11 +17,14 @@ class Board extends Component {
     handleClick(index) {
         const squares = this.state.squares.slice();
         let currentFigure = this.state.currentFigure;
+        let winner = this.state.winner;
         if (squares[index] == null) {
             squares[index] = currentFigure;
             currentFigure = currentFigure == 'X' ? 'O' : 'X';
+            winner = checkWinner(squares) || winner;
+
         }
-        this.setState({ squares, currentFigure });
+        this.setState({ squares, currentFigure, winner });
     }
 
     renderSquare(index) {
@@ -36,6 +40,7 @@ class Board extends Component {
         return (
             <div className='Board-Header-Container'>
                 <h1 className='Header'>Next player: {this.state.currentFigure}</h1>
+                {this.state.winner ? <h2 className='Winner'>Winner: {this.state.winner}</h2> : ''}
                 <div className="Board">
                     <div className="Board-row">
                         {this.renderSquare(0)}

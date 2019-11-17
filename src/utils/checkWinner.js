@@ -1,11 +1,12 @@
 export default (field, size) => {
-    const rowsWinner = checkWinnerInDirection(getRows(field, size));
-    const columnsWinner = checkWinnerInDirection(getColumns(field, size));
-    const diagonalsWinner = checkWinnerInDirection(getDiagonals(field, size));
-    return rowsWinner || columnsWinner || diagonalsWinner;
+    const rows = getRows(field, size);
+    const columns = getColumns(field, size);
+    const diagonals = getDiagonals(field, size);
+    const total = rows.concat(columns).concat(diagonals);
+    return checkWinnerInDirection(total);
 }
 
-const checkWinnerInDirection = (field) => {
+const checkWinnerInDirection = field => {
     return field.reduce((winner, row) => {
         const firstFigure = row[0];
         const hasWinner = row.every(figure => figure == firstFigure);
