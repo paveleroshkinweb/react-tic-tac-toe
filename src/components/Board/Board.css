@@ -1,0 +1,14 @@
+.Board-Header-Container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.Board {
+    display: flex;
+}
+
+.Header {
+    color: rgb(128, 115, 115);
+}

@@ -1,0 +1,14 @@
+.Square {
+    display: block;
+    background-color: rgb(221, 206, 206);
+    border: 1px solid #808080;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.Square:focus {
+    outline: none;
+}
