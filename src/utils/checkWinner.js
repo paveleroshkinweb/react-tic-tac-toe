@@ -6,15 +6,15 @@ export default (field, size) => {
     return checkWinnerInDirection(total);
 }
 
-const checkWinnerInDirection = field => {
+export const checkWinnerInDirection = field => {
     return field.reduce((winner, row) => {
         const firstFigure = row[0];
         const hasWinner = row.every(figure => figure == firstFigure);
-        return hasWinner ? firstFigure : winner;
+        return hasWinner && firstFigure ? firstFigure : winner;
     }, null);
 }
 
-const getRows = (field, size) => {
+export const getRows = (field, size) => {
     let index = 0;
     return field.reduce((rows, square, i) => {
         rows[index] = (rows[index] || []).concat(square);
@@ -25,31 +25,30 @@ const getRows = (field, size) => {
     }, []);
 };
 
-const getColumns = (field, size) => {
-    const sequence = Array.from(Array(size).keys());
-    return sequence.reduce((columns, index) => {
-        let currentIndex = index;
-        let element;
-        while ((element = field[currentIndex]) != undefined) {
-            columns[index] = (columns[index] || []).concat(element);
-            currentIndex += size;
-        }
+export const getColumns = (field, size) => {
+    const rows = getRows(field, size);
+    const rowsSequence = Array.from(Array(rows.length).keys());
+    return rowsSequence.reduce((columns, index) => {
+        const columnsSequence = Array.from(Array(rows.length).keys());
+        columnsSequence.forEach(columnIndex => {
+            columns[index] = (columns[index] || []).concat(rows[columnIndex][index]);
+        });
         return columns;
     }, []);
 };
 
-const getDiagonals = (field, size) => {
+export const getDiagonals = (field, size) => {
     const rows = getRows(field, size);
     const leftDiagonal = getLeftDiagonal(rows, size);
     const rightDiagonal = getRightDiagonal(rows, size);
     return [leftDiagonal, rightDiagonal];
 }
 
-const getLeftDiagonal = (rows, size) => {
-    const sequence = Array.from(Array(size).keys());
+export const getLeftDiagonal = (rows, size) => {
+    const sequence = Array.from(Array(+size).keys());
     return sequence.reduce((diagonal, index) => diagonal.concat(rows[index][index]), []);
 }
 
-const getRightDiagonal = (rows, size) => {
+export const getRightDiagonal = (rows, size) => {
     return getLeftDiagonal(rows.map(row => row.reverse()), size);
 }

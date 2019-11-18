@@ -6,7 +6,7 @@ import './App.css';
 class App extends Component {
   render() {
     return (
-      <Board size='3' />
+      <Board size='5' />
     );
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Square from '../Square/Square';
-import checkWinner from '../../utils/checkWinner';
+import checkWinner, { getRows } from '../../utils/checkWinner';
 import './Board.css';
 
 class Board extends Component {
@@ -15,14 +15,14 @@ class Board extends Component {
     }
 
     handleClick(index) {
+        console.log(index);
         const squares = this.state.squares.slice();
         let currentFigure = this.state.currentFigure;
         let winner = this.state.winner;
         if (squares[index] == null) {
             squares[index] = currentFigure;
             currentFigure = currentFigure == 'X' ? 'O' : 'X';
-            winner = checkWinner(squares) || winner;
-
+            winner = checkWinner(squares, this.props.size) || winner;
         }
         this.setState({ squares, currentFigure, winner });
     }
@@ -37,26 +37,18 @@ class Board extends Component {
     }
 
     render() {
+        const rows = getRows(this.state.squares, this.props.size);
+        let i = 0;
         return (
             <div className='Board-Header-Container'>
                 <h1 className='Header'>Next player: {this.state.currentFigure}</h1>
                 {this.state.winner ? <h2 className='Winner'>Winner: {this.state.winner}</h2> : ''}
                 <div className="Board">
-                    <div className="Board-row">
-                        {this.renderSquare(0)}
-                        {this.renderSquare(1)}
-                        {this.renderSquare(2)}
-                    </div>
-                    <div className="Board-Row">
-                        {this.renderSquare(3)}
-                        {this.renderSquare(4)}
-                        {this.renderSquare(5)}
-                    </div>
-                    <div className="Board-Row">
-                        {this.renderSquare(6)}
-                        {this.renderSquare(7)}
-                        {this.renderSquare(8)}
-                    </div>
+                    {rows.map(row => (
+                        <div className="Board-Row">
+                            {row.map(() => this.renderSquare(i++))}
+                        </div>
+                    ))}
                 </div>
             </div>
         );
