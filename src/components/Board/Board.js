@@ -12,18 +12,22 @@ class Board extends Component {
             currentFigure : 'X',
             winner: ''
         }
+        this.count = 0;
     }
 
     handleClick(index) {
-        console.log(index);
         const squares = this.state.squares.slice();
         let currentFigure = this.state.currentFigure;
         let winner = this.state.winner;
         if (squares[index] == null) {
+            this.count++;
             squares[index] = currentFigure;
             currentFigure = currentFigure == 'X' ? 'O' : 'X';
             winner = checkWinner(squares, this.props.size) || winner;
         }
+        if (this.count == squares.length && winner == '') {
+            winner = 'nobody';
+        } 
         this.setState({ squares, currentFigure, winner });
     }
 
@@ -39,10 +43,11 @@ class Board extends Component {
     render() {
         const rows = getRows(this.state.squares, this.props.size);
         let i = 0;
+        const hasWinner = !! this.state.winner;
         return (
             <div className='Board-Header-Container'>
                 <h1 className='Header'>Next player: {this.state.currentFigure}</h1>
-                {this.state.winner ? <h2 className='Winner'>Winner: {this.state.winner}</h2> : ''}
+                {hasWinner ? <h2 className='Winner'>Winner: {this.state.winner}</h2> : ''}
                 <div className="Board">
                     {rows.map(row => (
                         <div className="Board-Row">
