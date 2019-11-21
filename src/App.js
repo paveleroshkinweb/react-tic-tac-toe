@@ -1,17 +1,16 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, { Component, Fragment } from 'react';
 import Timer from './components/Timer/Timer';
-import Board from './components/Board/Board';
+import Board from './components/Board/Board'
 import './App.css';
 
 class App extends Component {
   render() {
     return (
-      <React.Fragment>
+      <Fragment>
         <Timer />
         <Board size='5' />
-      </React.Fragment>
-    );
+      </Fragment>
+    )
   }
 }
 

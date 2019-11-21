@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
 import Square from '../Square/Square';
 import checkWinner, { getRows } from '../../utils/checkWinner';
+import GameEnd from '../GameEnd/GameEnd';
 import './Board.css';
 
 class Board extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
+        this.initialState = {
             squares: Array(props.size ** 2).fill(null),
             currentFigure : 'X',
             winner: ''
-        }
-        this.count = 0;
+        };
+        this.state = { ...this.initialState };
+        this.countSteps = 0;
+        this.onEnd = this.onEnd.bind(this);
+    }
+
+    onEnd() {
+        this.setState( {...this.initialState} );
     }
 
     handleClick(index) {
@@ -20,12 +27,12 @@ class Board extends Component {
         let currentFigure = this.state.currentFigure;
         let winner = this.state.winner;
         if (squares[index] == null) {
-            this.count++;
+            this.countSteps++;
             squares[index] = currentFigure;
             currentFigure = currentFigure == 'X' ? 'O' : 'X';
             winner = checkWinner(squares, this.props.size) || winner;
         }
-        if (this.count == squares.length && winner == '') {
+        if (this.countSteps == squares.length && winner == '') {
             winner = 'nobody';
         } 
         this.setState({ squares, currentFigure, winner });
@@ -47,14 +54,15 @@ class Board extends Component {
         return (
             <div className='Board-Header-Container'>
                 <h1 className='Header'>Next player: {this.state.currentFigure}</h1>
-                {hasWinner ? <h2 className='Winner'>Winner: {this.state.winner}</h2> : ''}
                 <div className="Board">
                     {rows.map(row => (
                         <div className="Board-Row">
                             {row.map(() => this.renderSquare(i++))}
                         </div>
                     ))}
+                    {hasWinner && <GameEnd winner={this.state.winner} onClick={this.onEnd}/>}
                 </div>
+                
             </div>
         );
     }

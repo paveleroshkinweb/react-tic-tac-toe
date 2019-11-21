@@ -8,6 +8,7 @@
 .Board {
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .Board-Row {
