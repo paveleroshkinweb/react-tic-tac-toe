@@ -14,10 +14,15 @@ class GameContextProvider extends Component {
             winner: '',
             hasWinner: false
         }
-        this.state = { ...this.initialState };
+        const stateFromStorage = JSON.parse(localStorage.getItem('state'));
+        this.state = {...(stateFromStorage || this.initialState)};
         this.onGameEndHandler = this.onGameEndHandler.bind(this);
         this.onPlayerClick = this.onPlayerClick.bind(this);
         this.onTick = this.onTick.bind(this);
+    }
+
+    componentDidMount() {
+        window.onbeforeunload = () => localStorage.setItem('state', JSON.stringify(this.state));
     }
 
     onGameEndHandler() {

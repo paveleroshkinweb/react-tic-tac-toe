@@ -9,9 +9,7 @@ class Timer extends Component {
     }
 
     componentDidUpdate() {
-        if (! this.interval && ! this.context.state.hasWinner) {
-            this.startInterval();
-        }
+        this.startInterval();
     }
 
     contextHandler(context) {
@@ -26,7 +24,9 @@ class Timer extends Component {
     }
 
     startInterval() {
-        this.interval = setInterval(() => this.context.onTick(), 1000);
+        if (! this.interval && ! this.context.state.hasWinner) {
+            this.interval = setInterval(() => this.context.onTick(), 1000);        
+        }
     }
 
     stopInterval() {
