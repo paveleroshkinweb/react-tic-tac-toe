@@ -5,8 +5,8 @@ import Board from '../Board/Board';
 
 const Game = ({ boardSize }) => (
     <GameContextProvider boardSize={+boardSize}>
+        <Timer />        
         <Board />
-        <Timer />
     </GameContextProvider>
 )
 
