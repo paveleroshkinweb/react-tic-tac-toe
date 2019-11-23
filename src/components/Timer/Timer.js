@@ -1,30 +1,48 @@
 import React, { Component } from 'react';
+import { GameContext } from '../../contexts/GameContext';
 import './Timer.css';
 
 class Timer extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            seconds: props.seconds || 0
+    componentDidMount() {
+        this.startInterval();
+    }
+
+    componentDidUpdate() {
+        if (! this.interval && ! this.context.state.hasWinner) {
+            this.startInterval();
         }
     }
 
-    componentDidMount() {
-        this.interval = setInterval(() => this.tick(), 1000);
+    contextHandler(context) {
+        if (context.state.hasWinner) {
+            this.stopInterval();
+        }
+        return (
+            <div className="Timer">
+                <h3 className="Timer-Header">Timer: <span className='Timer-Tick'>{context.state.time}</span> seconds</h3>
+            </div>
+        );
     }
 
-    tick() {
-        this.setState({seconds: this.state.seconds + 1})
+    startInterval() {
+        this.interval = setInterval(() => this.context.onTick(), 1000);
+    }
+
+    stopInterval() {
+        clearInterval(this.interval);
+        this.interval = null;
     }
 
     render() {
         return (
-            <div className="Timer">
-                <h3 className="Timer-Header">Timer: <span className='Timer-Tick'>{this.state.seconds}</span> seconds</h3>
-            </div>
+            <GameContext.Consumer>
+                {this.contextHandler.bind(this)}
+            </GameContext.Consumer>
         );
     }
 }
+
+Timer.contextType = GameContext;
 
 export default Timer;

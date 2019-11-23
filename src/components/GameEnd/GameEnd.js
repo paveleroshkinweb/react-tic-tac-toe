@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { GameContext } from '../../contexts/GameContext';
 import './GameEnd.css';
 
-function GameEnd(props) {
-    return (
-        <div className='GameEnd'>
-            <div className='Container'>
-                <div className='Winner'>Winner: {props.winner}</div>
-                <button className='Again-btn' onClick={props.onClick}>Try again</button>
-            </div>
-        </div>
+class GameEnd extends Component {
 
-    )
+    render() {
+        return (
+            <GameContext.Consumer>
+                {(context) => (
+                    <div className='GameEnd'>
+                        <div className='Container'>
+                            <div className='Winner'>Winner: {context.state.winner}</div>
+                            <div className='Duration'>Duration time: {context.state.time} seconds</div>
+                            <button className='Again-btn' onClick={context.onGameEndHandler}>Try again</button>
+                        </div>
+                    </div>
+                )}
+            </GameContext.Consumer>
+        );
+    }
 }
+
+GameEnd.contextType = GameContext;
 
 export default GameEnd;

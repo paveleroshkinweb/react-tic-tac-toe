@@ -15,9 +15,16 @@
     flex-direction: column;
 }
 
+.Container > div {
+    color: rgb(226, 216, 216);
+}
+
+.Duration {
+    font-size: 20px;
+}
+
 .Winner {
     font-size: 50px;
-    color: rgb(226, 216, 216);
 }
 
 .Again-btn {
